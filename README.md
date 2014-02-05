@@ -368,18 +368,19 @@
     var superPower = new SuperPower();
     ```
 
-  - Use one `var` declaration for multiple variables and declare each variable on a newline.
+  - Use `var` declaration for each new variable. Equals signs should be aligned.
 
     ```javascript
     // bad
-    var items = getItems();
-    var goSportsTeam = true;
-    var dragonball = 'z';
-
-    // good
     var items = getItems(),
         goSportsTeam = true,
         dragonball = 'z';
+
+
+    // good
+    var items        = getItems();
+    var goSportsTeam = true;
+    var dragonball   = 'z';
     ```
 
   - Declare unassigned variables last. This is helpful when later on you might need to assign a variable depending on one of the previous assigned variables.
@@ -397,7 +398,7 @@
         len;
 
     // good
-    var items = getItems(),
+    var items        = getItems(),
         goSportsTeam = true,
         dragonball,
         length,
