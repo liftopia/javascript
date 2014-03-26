@@ -175,10 +175,10 @@
  - To convert an array-like object to an array, use Array#slice.
 
     ```javascript
-    function trigger() {
+    var trigger = function() {
       var args = Array.prototype.slice.call(arguments);
       ...
-    }
+    };
     ```
 
     **[[⬆]](#TOC)**
@@ -249,7 +249,7 @@
     length = messages.length;
 
     // bad
-    function inbox(messages) {
+    var inbox = function(messages) {
       items = '<ul>';
 
       for (i = 0; i < length; i++) {
@@ -257,10 +257,10 @@
       }
 
       return items + '</ul>';
-    }
+    };
 
     // good
-    function inbox(messages) {
+    var inbox = function(messages) {
       items = [];
 
       for (i = 0; i < length; i++) {
@@ -268,7 +268,7 @@
       }
 
       return '<ul><li>' + items.join('</li><li>') + '</li></ul>';
-    }
+    };
     ```
 
     **[[⬆]](#TOC)**
@@ -276,9 +276,15 @@
 
 ## <a name='functions'>Functions</a>
 
-  - Function expressions:
+  - Function expressions should be used instead of declarations. Just like all expressions they should be properly scoped with `var` and end with a semicolon:
 
     ```javascript
+    // bad
+    function nope() {
+      return false;
+    }
+
+    // good
     // anonymous function expression
     var anonymous = function() {
       return true;
@@ -288,8 +294,11 @@
     var named = function named() {
       return true;
     };
+    ```
 
-    // immediately-invoked function expression (IIFE)
+  - The one exception is the immediately-invoked function expression (IIFE):
+
+    ```javascript
     (function() {
       console.log('Welcome to the Internet. Please follow me.');
     })();
@@ -319,14 +328,14 @@
 
     ```javascript
     // bad
-    function nope(name, options, arguments) {
+    var nope = function(name, options, arguments) {
       // ...stuff...
-    }
+    };
 
     // good
-    function yup(name, options, args) {
+    var yup = function(name, options, args) {
       // ...stuff...
-    }
+    };
     ```
 
     **[[⬆]](#TOC)**
@@ -358,9 +367,9 @@
       age: 28
     };
 
-    function getProp(prop) {
+    var getProp = function(prop) {
       return luke[prop];
-    }
+    };
 
     var isJedi = getProp('jedi');
     ```
@@ -420,7 +429,7 @@
 
     ```javascript
     // bad
-    function() {
+    var nope = function() {
       test();
       console.log('doing stuff..');
 
@@ -433,10 +442,10 @@
       }
 
       return name;
-    }
+    };
 
     // good
-    function() {
+    var yup = function() {
       var name = getName();
 
       test();
@@ -449,10 +458,10 @@
       }
 
       return name;
-    }
+    };
 
     // bad
-    function() {
+    var nope = function() {
       var name = getName();
 
       if (!arguments.length) {
@@ -460,10 +469,10 @@
       }
 
       return true;
-    }
+    };
 
     // good
-    function() {
+    var yup = function() {
       if (!arguments.length) {
         return false;
       }
@@ -471,7 +480,7 @@
       var name = getName();
 
       return true;
-    }
+    };
     ```
 
     **[[⬆]](#TOC)**
@@ -484,33 +493,33 @@
     ```javascript
     // we know this wouldn't work (assuming there
     // is no notDefined global variable)
-    function example() {
+    var example = function() {
       console.log(notDefined); // => throws a ReferenceError
-    }
+    };
 
     // creating a variable declaration after you
     // reference the variable will work due to
     // variable hoisting. Note: the assignment
     // value of `true` is not hoisted.
-    function example() {
+    var example = function() {
       console.log(declaredButNotAssigned); // => undefined
       var declaredButNotAssigned = true;
-    }
+    };
 
     // The interpreter is hoisting the variable
     // declaration to the top of the scope.
     // Which means our example could be rewritten as:
-    function example() {
+    var example = function() {
       var declaredButNotAssigned;
       console.log(declaredButNotAssigned); // => undefined
       declaredButNotAssigned = true;
-    }
+    };
     ```
 
   - Anonymous function expressions hoist their variable name, but not the function assignment.
 
     ```javascript
-    function example() {
+    var example = function() {
       console.log(anonymous); // => undefined
 
       anonymous(); // => TypeError anonymous is not a function
@@ -518,13 +527,13 @@
       var anonymous = function() {
         console.log('anonymous function expression');
       };
-    }
+    };
     ```
 
   - Named function expressions hoist the variable name, not the function name or the function body.
 
     ```javascript
-    function example() {
+    var example = function() {
       console.log(named); // => undefined
 
       named(); // => TypeError named is not a function
@@ -534,11 +543,11 @@
       var named = function superPower() {
         console.log('Flying');
       };
-    }
+    };
 
     // the same is true when the function name
     // is the same as the variable name.
-    function example() {
+    var example = function() {
       console.log(named); // => undefined
 
       named(); // => TypeError named is not a function
@@ -546,19 +555,19 @@
       var named = function named() {
         console.log('named');
       }
-    }
+    };
     ```
 
   - Function declarations hoist their name and the function body.
 
     ```javascript
-    function example() {
+    var example = function() {
       superPower(); // => Flying
 
       function superPower() {
         console.log('Flying');
       }
-    }
+    };
     ```
 
   - For more information refer to [JavaScript Scoping & Hoisting](http://www.adequatelygood.com/2010/2/JavaScript-Scoping-and-Hoisting) by [Ben Cherry](http://www.adequatelygood.com/)
@@ -633,12 +642,12 @@
     }
 
     // bad
-    function() { return false; }
+    var example = function() { return false; };
 
     // good
-    function() {
+    var example = function() {
       return false;
-    }
+    };
     ```
 
     **[[⬆]](#TOC)**
@@ -655,12 +664,12 @@
     //
     // @param <String> tag
     // @return <Element> element
-    function make(tag) {
+    var make = function(tag) {
 
       // ...stuff...
 
       return element;
-    }
+    };
 
     // good
     /**
@@ -670,12 +679,12 @@
      * @param <String> tag
      * @return <Element> element
      */
-    function make(tag) {
+    var make = function(tag) {
 
       // ...stuff...
 
       return element;
-    }
+    };
     ```
 
   - Use `//` for single line comments. Place single line comments on a newline above the subject of the comment. Put an empty line before the comment.
@@ -689,23 +698,23 @@
     var active = true;
 
     // bad
-    function getType() {
+    var getType = function() {
       console.log('fetching type...');
       // set the default type to 'no type'
       var type = this._type || 'no type';
 
       return type;
-    }
+    };
 
     // good
-    function getType() {
+    var getType = function() {
       console.log('fetching type...');
 
       // set the default type to 'no type'
       var type = this._type || 'no type';
 
       return type;
-    }
+    };
     ```
 
   - Prefixing your comments with `FIXME` or `TODO` helps other developers quickly understand if you're pointing out a problem that needs to be revisited, or if you're suggesting a solution to the problem that needs to be implemented. These are different than regular comments because they are actionable. The actions are `FIXME -- need to figure this out` or `TODO -- need to implement`.
@@ -713,25 +722,25 @@
   - Use `// FIXME:` to annotate problems
 
     ```javascript
-    function Calculator() {
+    var Calculator = function() {
 
       // FIXME: shouldn't use a global here
       total = 0;
 
       return this;
-    }
+    };
     ```
 
   - Use `// TODO:` to annotate solutions to problems
 
     ```javascript
-    function Calculator() {
+    var Calculator = function() {
 
       // TODO: total should be configurable by an options param
       this.total = 0;
 
       return this;
-    }
+    };
   ```
 
     **[[⬆]](#TOC)**
@@ -743,33 +752,33 @@
 
     ```javascript
     // bad
-    function() {
+    var test = function() {
     ∙∙∙∙var name;
-    }
+    };
 
     // bad
-    function() {
+    var test = function() {
     ∙var name;
-    }
+    };
 
     // good
-    function() {
+    var test = function() {
     ∙∙var name;
-    }
+    };
     ```
 
   - Place 1 space before the leading brace.
 
     ```javascript
     // bad
-    function test(){
+    var test = function(){
       console.log('test');
-    }
+    };
 
     // good
-    function test() {
+    var test = function() {
       console.log('test');
-    }
+    };
 
     // bad
     dog.set('attr',{
@@ -1016,14 +1025,14 @@
 
     ```javascript
     // bad
-    function q() {
+    var q = function() {
       // ...stuff...
-    }
+    };
 
     // good
-    function query() {
+    var query = function() {
       // ..stuff..
-    }
+    };
     ```
 
   - Use camelCase when naming objects, functions, and instances
@@ -1032,14 +1041,14 @@
     // bad
     var OBJEcttsssss = {};
     var this_is_my_object = {};
-    function c() {};
+    var c = function() {};
     var u = new user({
       name: 'Bob Parr'
     });
 
     // good
     var thisIsMyObject = {};
-    function thisIsMyFunction() {};
+    var thisIsMyFunction = function() {};
     var user = new User({
       name: 'Bob Parr'
     });
@@ -1049,18 +1058,18 @@
 
     ```javascript
     // bad
-    function user(options) {
+    var user = function(options) {
       this.name = options.name;
-    }
+    };
 
     var bad = new user({
       name: 'nope'
     });
 
     // good
-    function User(options) {
+    var User = function(options) {
       this.name = options.name;
-    }
+    };
 
     var good = new User({
       name: 'yup'
@@ -1082,28 +1091,28 @@
 
     ```javascript
     // bad
-    function() {
+    var test = function() {
       var self = this;
       return function() {
         console.log(self);
       };
-    }
+    };
 
     // bad
-    function() {
+    var test = function() {
       var that = this;
       return function() {
         console.log(that);
       };
-    }
+    };
 
     // good
-    function() {
+    var test = function() {
       var _this = this;
       return function() {
         console.log(_this);
       };
-    }
+    };
     ```
 
   - Name your functions. This is helpful for stack traces.
@@ -1159,11 +1168,11 @@
   - It's okay to create get() and set() functions, but be consistent.
 
     ```javascript
-    function Jedi(options) {
+    var Jedi = function(options) {
       options || (options = {});
       var lightsaber = options.lightsaber || 'blue';
       this.set('lightsaber', lightsaber);
-    }
+    };
 
     Jedi.prototype.set = function(key, val) {
       this[key] = val;
@@ -1182,9 +1191,9 @@
   - Assign methods to the prototype object, instead of overwriting the prototype with a new object. Overwriting the prototype makes inheritance impossible: by resetting the prototype you'll overwrite the base!
 
     ```javascript
-    function Jedi() {
+    var Jedi = function() {
       console.log('new jedi');
-    }
+    };
 
     // bad
     Jedi.prototype = {
@@ -1221,8 +1230,8 @@
     };
 
     var luke = new Jedi();
-    luke.jump(); // => true
-    luke.setHeight(20) // => undefined
+    luke.jump() // => true
+      .setHeight(20); // => undefined
 
     // good
     Jedi.prototype.jump = function() {
@@ -1245,10 +1254,10 @@
   - It's okay to write a custom toString() method, just make sure it works successfully and causes no side effects.
 
     ```javascript
-    function Jedi(options) {
+    var Jedi = function(options) {
       options || (options = {});
       this.name = options.name || 'no name';
-    }
+    };
 
     Jedi.prototype.getName = function getName() {
       return this.name;
@@ -1308,9 +1317,9 @@
 
       var previousFancyInput = global.FancyInput;
 
-      function FancyInput(options) {
+      var FancyInput = function(options) {
         this.options = options || {};
-      }
+      };
 
       FancyInput.noConflict = function noConflict() {
         global.FancyInput = previousFancyInput;
@@ -1340,7 +1349,7 @@
 
     ```javascript
     // bad
-    function setSidebar() {
+    var setSidebar = function() {
       $('.sidebar').hide();
 
       // ...stuff...
@@ -1348,10 +1357,10 @@
       $('.sidebar').css({
         'background-color': 'pink'
       });
-    }
+    };
 
     // good
-    function setSidebar() {
+    var setSidebar = function() {
       var $sidebar = $('.sidebar');
       $sidebar.hide();
 
@@ -1360,7 +1369,7 @@
       $sidebar.css({
         'background-color': 'pink'
       });
-    }
+    };
     ```
 
   - For DOM queries use Cascading `$('.sidebar ul')` or parent > child `$('.sidebar > ul')`. [jsPerf](http://jsperf.com/jquery-find-vs-context-sel/16)
@@ -1398,9 +1407,9 @@
   - **Yup.**
 
     ```javascript
-    function() {
+    var test = function() {
       return true;
-    }
+    };
     ```
 
     **[[⬆]](#TOC)**
